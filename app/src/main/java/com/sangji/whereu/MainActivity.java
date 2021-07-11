@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        String userID = mFirebaseAuth.getCurrentUser().getEmail();
-        String userPass = mFirebaseAuth.getCurrentUser().getUid();
+        String userEmail = mFirebaseAuth.getCurrentUser().getEmail();
+        String userUid = mFirebaseAuth.getCurrentUser().getUid();
         tv_id = findViewById(R.id.tv_email);
         tv_pass = findViewById(R.id.tv_uid);
-        tv_id.setText(userID);
-        tv_pass.setText(userPass);
+        tv_id.setText(userEmail);
+        tv_pass.setText(userUid);
 
         Button btn_logout = findViewById(R.id.btn_logout);
         btn_logout.setOnClickListener(new View.OnClickListener() {
