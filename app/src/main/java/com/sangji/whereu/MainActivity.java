@@ -1,35 +1,69 @@
 package com.sangji.whereu;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
-    private TextView tv_id, tv_pass;
+    private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
+
+    private TextView tv_id, tv_pass, tv_name;
+    String userName;
+    UserAccount userAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        String userEmail = mFirebaseAuth.getCurrentUser().getEmail();
-        String userUid = mFirebaseAuth.getCurrentUser().getUid();
         tv_id = findViewById(R.id.tv_email);
         tv_pass = findViewById(R.id.tv_uid);
+        tv_name = findViewById(R.id.tv_name);
+
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("whereu").child("UserAccount").child(firebaseUser.getUid());
+
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //문제 부분
+                userAccount = snapshot.getValue(UserAccount.class); // String이 아님 UserAccount 객체를 받아옴
+                //바로 위의 userAccount와 데이터베이스의 UserAccount는 다른개념임
+                tv_name.setText(userAccount.getName()); //getName()대신 다른걸넣으면 데베안의 다른게 가져와짐
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        String userEmail = mFirebaseAuth.getCurrentUser().getEmail();
         tv_id.setText(userEmail);
+        String userUid = mFirebaseAuth.getCurrentUser().getUid();
         tv_pass.setText(userUid);
+
+
 
         Button btn_logout = findViewById(R.id.btn_logout);
         btn_logout.setOnClickListener(new View.OnClickListener() {
