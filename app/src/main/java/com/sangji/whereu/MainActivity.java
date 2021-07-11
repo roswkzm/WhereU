@@ -6,19 +6,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
+    private TextView tv_id, tv_pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mFirebaseAuth = FirebaseAuth.getInstance();
+        String userID = mFirebaseAuth.getCurrentUser().getEmail();
+        String userPass = mFirebaseAuth.getCurrentUser().getUid();
+        tv_id = findViewById(R.id.tv_email);
+        tv_pass = findViewById(R.id.tv_uid);
+        tv_id.setText(userID);
+        tv_pass.setText(userPass);
 
         Button btn_logout = findViewById(R.id.btn_logout);
         btn_logout.setOnClickListener(new View.OnClickListener() {
