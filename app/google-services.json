@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1079907109641",
+    "project_id": "whereu-6faf0",
+    "storage_bucket": "whereu-6faf0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079907109641:android:21a2753a2de7b9dc45a1d8",
+        "android_client_info": {
+          "package_name": "com.sangji.whereu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079907109641-coi1fggvfnke0rb4aen8i80v5rdgbf7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA40uJGSy1w_oV7Vzc-95ZmGpRpbPSLpHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079907109641-coi1fggvfnke0rb4aen8i80v5rdgbf7k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
