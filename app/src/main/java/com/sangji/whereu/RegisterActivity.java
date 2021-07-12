@@ -95,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     Log.d("account check", "onComplete: strImage :" + account.getProfileImageUrl());
 
+
                                     // setValue는 database에 insert하는 행위다.
                                     mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
                                 }
@@ -107,6 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(RegisterActivity.this,"회원가입에 실패하였습니다.",Toast.LENGTH_SHORT).show();
                         }
+
 
                     }
                 });
