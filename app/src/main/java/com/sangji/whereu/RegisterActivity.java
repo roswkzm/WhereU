@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     account.setName(strName);
                                     account.setEmailId(firebaseUser.getEmail());
                                     account.setPassword(strPwd);
-                                    account.setProfileImageUrl(strImage);
+                                    account.setProfileImageUrl(strImage);   // 이미지 주소
 
                                     Log.d("account check", "onComplete: strImage :" + account.getProfileImageUrl());
 
