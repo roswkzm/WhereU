@@ -81,5 +81,25 @@ public class MainActivity extends AppCompatActivity {
         // 회원탈퇴 기능
         mFirebaseAuth.getCurrentUser().delete();
          */
+
+        Button btn_talk = findViewById(R.id.btn_talk);
+        btn_talk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,TalkMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        Button btn_map = findViewById(R.id.btn_map);
+        btn_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,TalkMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
