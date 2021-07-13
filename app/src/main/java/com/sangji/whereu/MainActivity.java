@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
 
     private TextView tv_id, tv_pass, tv_name;
+    private ImageView tv_img;
     String userName;
     UserAccount userAccount;
 
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         tv_id = findViewById(R.id.tv_email);
         tv_pass = findViewById(R.id.tv_uid);
         tv_name = findViewById(R.id.tv_name);
+        tv_img = findViewById(R.id.tv_img);
+
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 userAccount = snapshot.getValue(UserAccount.class); // String이 아님 UserAccount 객체를 받아옴
                 //바로 위의 userAccount와 데이터베이스의 UserAccount는 다른개념임
                 tv_name.setText(userAccount.getName()); //getName()대신 다른걸넣으면 데베안의 다른게 가져와짐
+                Glide.with(MainActivity.this).load(userAccount.getProfileImageUrl()).override(300,300).fitCenter().into(tv_img);
             }
 
 

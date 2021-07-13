@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhereU">
-        <activity android:name=".MapMainActivity"></activity>
+        <activity android:name=".MapMainActivity" />
         <activity android:name=".TalkMainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
