@@ -87,7 +87,7 @@ public class PeopleFragment extends Fragment {
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), MessageActivity.class);
                     ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);    //애니메이션 효과
-                    startActivity(intent,activityOptions.toBundle());   // 화면 전환과 동시에 윗줄의 애니메이션 실행
+                    startActivity(intent,activityOptions.toBundle());   // 화면 전환과 동시에 윗줄의 애니메이션 실행구현
                 }
             });
 
