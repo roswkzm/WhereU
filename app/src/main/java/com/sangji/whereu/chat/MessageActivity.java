@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -73,7 +76,12 @@ public class MessageActivity extends AppCompatActivity {
                     comment.uid = uid;
                     comment.message = editText.getText().toString();
 
-                    FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment);
+                    FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(Task<Void> task) {
+                            editText.setText(""); //대화 보낸후 텍스트창 초기화
+                        }
+                    });
                 }
 
             }
@@ -137,7 +145,10 @@ public class MessageActivity extends AppCompatActivity {
                     for(DataSnapshot item : dataSnapshot.getChildren()){
                         comments.add(item.getValue(ChatModel.Comment.class));
                     }
+                    // 메시지가 새로 갱신되도록 함
                     notifyDataSetChanged();
+
+                    recyclerView.scrollToPosition(comments.size() - 1); // 메시지를 보낸후 대화방의 가장 하단으로 시점이 변경됨
                 }
 
                 @Override
@@ -158,12 +169,14 @@ public class MessageActivity extends AppCompatActivity {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             MessageViewHolder messageViewHolder = ((MessageViewHolder)holder);
 
+            // 내가 보낸 메시지
             if(comments.get(position).uid.equals(uid)){
                 messageViewHolder.textView_message.setText(comments.get(position).message);
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.rightbubble);
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
                 messageViewHolder.textView_message.setTextSize(25);
-            }else{
+                messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);  // 내가보낸 말풍선 우측정렬
+            }else{  // 상대방이 보낸 메시지
                 Glide.with(holder.itemView.getContext())
                         .load(userAccount.getProfileImageUrl())
                         .apply(new RequestOptions().circleCrop())
@@ -173,6 +186,7 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.leftbubble);
                 messageViewHolder.textView_message.setText(comments.get(position).message);
                 messageViewHolder.textView_message.setTextSize(25);
+                messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);   // 내가보낸 말풍선 좌측정렬
             }
 
         }
@@ -187,6 +201,7 @@ public class MessageActivity extends AppCompatActivity {
             public TextView textview_name;
             public ImageView imageView_profile;
             public LinearLayout linearLayout_destination;
+            public LinearLayout linearLayout_main;
 
             public MessageViewHolder(View view) {
                 super(view);
@@ -194,6 +209,7 @@ public class MessageActivity extends AppCompatActivity {
                 textview_name = (TextView)view.findViewById(R.id.messageItem_textview_name);
                 imageView_profile = (ImageView)view.findViewById(R.id.messageItem_imageview_profile);
                 linearLayout_destination = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_destination);
+                linearLayout_main = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_main);    // 말풍선 좌우 정렬
             }
         }
     }
