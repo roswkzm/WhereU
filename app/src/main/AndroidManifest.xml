@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhereU">
+        <activity android:name=".chat.MessageActivity"></activity>
         <activity android:name=".MapMainActivity" />
         <activity android:name=".TalkMainActivity" />
         <activity android:name=".LoginActivity">

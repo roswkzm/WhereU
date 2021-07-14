@@ -68,6 +68,11 @@ public class RegisterActivity extends AppCompatActivity {
                 String strPwd = mEtPwd.getText().toString();
                 String strName = mEtName.getText().toString();
 
+                if(strEmail == null || strPwd == null || strName == null || imageUri == null){
+                    return;
+                }
+
+
                 // Firebase Auth 진행
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail,strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
