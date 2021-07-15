@@ -17,15 +17,14 @@
         android:background="@drawable/center_logo"></FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mainactivity_bottomnavigationview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mainactivity_bottomnavigationview"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/design_default_color_primary"
-        app:itemTextColor="@android:color/white"
+        app:itemBackground="@android:color/darker_gray"
         app:itemIconTint="@android:color/white"
-        app:menu="@menu/bottom_navigation_main"
-        >
+        app:itemTextColor="@android:color/white"
+        app:menu="@menu/bottom_navigation_main">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
