@@ -41,6 +41,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:21.0.0'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.github.bumptech.glide:glide:4.10.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
