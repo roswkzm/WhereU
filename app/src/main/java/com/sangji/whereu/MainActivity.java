@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,TalkMainActivity.class);
+                Intent intent = new Intent(MainActivity.this,MapMainActivity.class);
                 startActivity(intent);
             }
         });
