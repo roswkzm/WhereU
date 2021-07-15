@@ -13,7 +13,8 @@
         android:layout_above="@+id/mainactivity_bottomnavigationview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"></FrameLayout>
+        android:layout_alignParentRight="true"
+        android:background="@drawable/center_logo"></FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
