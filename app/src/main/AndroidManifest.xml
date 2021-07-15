@@ -8,8 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WhereU">
-        <activity android:name=".chat.MessageActivity"></activity>
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".chat.MessageActivity" />
         <activity android:name=".MapMainActivity" />
         <activity android:name=".TalkMainActivity" />
         <activity android:name=".LoginActivity">
