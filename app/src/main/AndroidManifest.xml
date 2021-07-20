@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".LoginActivity">
         </activity>
-        <activity android:name=".chat.MessageActivity" />
+        <activity android:name=".chat.MessageActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".MapMainActivity" />
         <activity android:name=".TalkMainActivity" />
         <activity android:name=".RegisterActivity" />
