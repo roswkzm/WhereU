@@ -227,4 +227,10 @@ public class MessageActivity extends AppCompatActivity {
             }
         }
     }
+    // 체팅방에서 뒤로가기 눌렀을때 애니메이션으로 꺼지게하기
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.fromleft,R.anim.toright);
+    }
 }

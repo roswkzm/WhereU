@@ -6,9 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sangji.whereu.fragment.ChatFragment;
 import com.sangji.whereu.fragment.PeopleFragment;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TalkMainActivity extends AppCompatActivity {
 
@@ -37,7 +48,15 @@ public class TalkMainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        passPushTokenToServer();
 
 
+    }
+    void passPushTokenToServer(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String token = FirebaseMessaging.getInstance().getToken().getResult();
+        Map<String,Object> map = new HashMap<>();
+        map.put("pushToken",token);
+        FirebaseDatabase.getInstance().getReference().child("whereu").child("UserAccount").child(uid).updateChildren(map);
     }
 }
