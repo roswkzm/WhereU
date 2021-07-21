@@ -10,6 +10,7 @@ public class UserAccount {
     private String password;    // 비밀번호
     private String name;
     private String profileImageUrl;
+    private String pushToken;
 
     public String getProfileImageUrl() {
         return profileImageUrl;
@@ -51,5 +52,13 @@ public class UserAccount {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPushToken() {
+        return pushToken;
+    }
+
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
     }
 }

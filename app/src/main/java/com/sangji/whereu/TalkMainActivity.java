@@ -54,9 +54,23 @@ public class TalkMainActivity extends AppCompatActivity {
     }
     void passPushTokenToServer(){
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String token = FirebaseMessaging.getInstance().getToken().getResult();
-        Map<String,Object> map = new HashMap<>();
-        map.put("pushToken",token);
-        FirebaseDatabase.getInstance().getReference().child("whereu").child("UserAccount").child(uid).updateChildren(map);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        Map<String,Object> map = new HashMap<>();
+                        map.put("pushToken",token);
+                        FirebaseDatabase.getInstance().getReference().child("whereu").child("UserAccount").child(uid).updateChildren(map);
+
+                    }
+                });
+
+
     }
 }

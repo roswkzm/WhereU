@@ -1,6 +1,5 @@
 package com.sangji.whereu.chat;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,10 +26,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.sangji.whereu.ChatModel;
+import com.sangji.whereu.NotificationModel;
 import com.sangji.whereu.R;
 import com.sangji.whereu.UserAccount;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +57,8 @@ public class MessageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+
+    private UserAccount destinationuserAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +96,7 @@ public class MessageActivity extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(Task<Void> task) {
+                            sendGcm();
                             editText.setText(""); //대화 보낸후 텍스트창 초기화
                         }
                     });
@@ -95,6 +106,35 @@ public class MessageActivity extends AppCompatActivity {
         });
         checkChatRoom();
 
+    }
+    void sendGcm(){
+        Gson gson = new Gson();
+
+        NotificationModel notificationModel = new NotificationModel();
+        notificationModel.to = destinationuserAccount.getPushToken();
+        notificationModel.notification.title = "보낸이 아이디";
+        notificationModel.notification.text = editText.getText().toString();
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
+
+        Request request = new Request.Builder()
+                .header("Content-Type","application/json")
+                .addHeader("Authorization","key=AIzaSyD86y7rqCmG87byZYyaeHLYuPVPVyWdkps")
+                .url("https://fcm.googleapis.com/fcm/send")
+                .post(requestBody)
+                .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+            }
+        });
     }
 
     void checkChatRoom(){
@@ -122,7 +162,7 @@ public class MessageActivity extends AppCompatActivity {
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         List<ChatModel.Comment> comments;
-        UserAccount userAccount;
+
         public RecyclerViewAdapter() {
             comments = new ArrayList<>();
 
@@ -130,10 +170,9 @@ public class MessageActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    userAccount = dataSnapshot.getValue(UserAccount.class);
+                    destinationuserAccount = dataSnapshot.getValue(UserAccount.class);
                     getMessageList();
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
@@ -185,10 +224,10 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);  // 내가보낸 말풍선 우측정렬
             }else{  // 상대방이 보낸 메시지
                 Glide.with(holder.itemView.getContext())
-                        .load(userAccount.getProfileImageUrl())
+                        .load(destinationuserAccount.getProfileImageUrl())
                         .apply(new RequestOptions().circleCrop())
                         .into(messageViewHolder.imageView_profile);
-                messageViewHolder.textview_name.setText(userAccount.getName());
+                messageViewHolder.textview_name.setText(destinationuserAccount.getName());
                 messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.leftbubble);
                 messageViewHolder.textView_message.setText(comments.get(position).message);
