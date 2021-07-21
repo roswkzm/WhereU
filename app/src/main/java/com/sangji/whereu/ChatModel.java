@@ -13,6 +13,7 @@ import java.util.Map;
 
             public String uid;
             public String message;
+            public Object timestamp;
         }
     }
 

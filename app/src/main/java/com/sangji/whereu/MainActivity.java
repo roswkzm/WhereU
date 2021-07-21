@@ -54,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
                 userAccount = snapshot.getValue(UserAccount.class); // String이 아님 UserAccount 객체를 받아옴
                 //바로 위의 userAccount와 데이터베이스의 UserAccount는 다른개념임
                 tv_name.setText(userAccount.getName()); //getName()대신 다른걸넣으면 데베안의 다른게 가져와짐
-                Glide.with(MainActivity.this).load(userAccount.getProfileImageUrl()).override(300,300).fitCenter().into(tv_img);
+                Glide.with(MainActivity.this)
+                        .load(userAccount.getProfileImageUrl())
+                        .override(300,300)
+                        .fitCenter().into(tv_img);
             }
 
 
