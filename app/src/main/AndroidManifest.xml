@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sangji.whereu">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,28 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity">
-        </activity>
-        <activity android:name=".chat.MessageActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".LoginActivity"></activity>
+        <activity
+            android:name=".chat.MessageActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".MapMainActivity" />
         <activity android:name=".TalkMainActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDcqNNLqLsd6HqY7z4yJHHhzG_Al67YmMI"/>
-
+            android:value="AIzaSyDcqNNLqLsd6HqY7z4yJHHhzG_Al67YmMI" />
     </application>
 
 </manifest>
