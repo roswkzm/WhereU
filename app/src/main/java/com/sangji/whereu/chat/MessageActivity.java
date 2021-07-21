@@ -119,7 +119,7 @@ public class MessageActivity extends AppCompatActivity {
 
         Request request = new Request.Builder()
                 .header("Content-Type","application/json")
-                .addHeader("Authorization","key=AIzaSyD86y7rqCmG87byZYyaeHLYuPVPVyWdkps")
+                .addHeader("Authorization","key=AAAA-296ywk:APA91bFk4aEgmtoZrMx-0JzVZrx0Ka4qADgEcQmlgd0uJBfo78HaH7ExyjLoUfvib-hfYj3JS2UhKurCAxotYKJ-Jy8P9ykkIM7oH9Wy_nzpmbnIkf0iQCKfZbURpFnQOdE9SCzyHrTg")
                 .url("https://fcm.googleapis.com/fcm/send")
                 .post(requestBody)
                 .build();
