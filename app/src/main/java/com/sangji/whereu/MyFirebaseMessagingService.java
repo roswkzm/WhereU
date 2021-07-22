@@ -1,3 +1,4 @@
+// 포그라운드 알람이 안되는건 이거때문인데 오레오버전 이후로 사용하는 방법이 바껴서그럼
 package com.sangji.whereu;
 
 import android.app.Notification;
