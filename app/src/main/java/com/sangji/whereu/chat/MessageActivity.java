@@ -113,10 +113,10 @@ public class MessageActivity extends AppCompatActivity {
     void sendGcm(){
         Gson gson = new Gson();
 
-        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        //String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         NotificationModel notificationModel = new NotificationModel();
         notificationModel.to = destinationuserAccount.getPushToken();
-        notificationModel.notification.title = userName;
+        notificationModel.notification.title = "보낸사람";
         notificationModel.notification.body = editText.getText().toString();
         /*notificationModel.data.title = userName;
         notificationModel.data.body = editText.getText().toString();*/
