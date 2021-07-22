@@ -118,8 +118,8 @@ public class MessageActivity extends AppCompatActivity {
         notificationModel.to = destinationuserAccount.getPushToken();
         notificationModel.notification.title = userName;
         notificationModel.notification.body = editText.getText().toString();
-        notificationModel.data.title = userName;
-        notificationModel.data.body = editText.getText().toString();
+        /*notificationModel.data.title = userName;
+        notificationModel.data.body = editText.getText().toString();*/
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
 

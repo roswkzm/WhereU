@@ -79,8 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(strName).build();
-                        task.getResult().getUser().updateProfile(userProfileChangeRequest);
+                        /*UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(strName).build();
+                        task.getResult().getUser().updateProfile(userProfileChangeRequest);*/
 
                         if(task.isSuccessful()){
                             FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
