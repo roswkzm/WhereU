@@ -21,8 +21,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
@@ -46,6 +48,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class MessageActivity extends AppCompatActivity {
+
 
     private String destinationUid;
     private Button button;
@@ -110,10 +113,13 @@ public class MessageActivity extends AppCompatActivity {
     void sendGcm(){
         Gson gson = new Gson();
 
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         NotificationModel notificationModel = new NotificationModel();
         notificationModel.to = destinationuserAccount.getPushToken();
-        notificationModel.notification.title = "보낸이 아이디";
-        notificationModel.notification.text = editText.getText().toString();
+        notificationModel.notification.title = userName;
+        notificationModel.notification.body = editText.getText().toString();
+        notificationModel.data.title = userName;
+        notificationModel.data.body = editText.getText().toString();
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
 
