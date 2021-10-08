@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this::onMapReady);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng location = new LatLng(37.370467, 127.928695); //상지대학교 마커
@@ -76,8 +78,9 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {

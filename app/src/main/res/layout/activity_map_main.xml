@@ -5,9 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MapMainActivity">
-
-
+    <Button
+        android:id="@+id/btn_get_location"
+        android:text="현재위치 가져오기"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/location_view"
+        android:text="위도 경도"/>
     <fragment
         android:id="@+id/googleMap"
         android:layout_width="match_parent"
