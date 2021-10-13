@@ -142,6 +142,8 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
                                 if (location != null) {
                                     // 파라미터로 받은 location을 통해 위도, 경도 정보를 텍스트뷰에 set.
                                     location_view.setText("위도: " + location.getLatitude() + " / 경도: " + location.getLongitude());
+                                    
+                                    //위치 정보 데이터베이스에 저장
                                     mDatabaseRef.child("Latitude").setValue(location.getLatitude());
                                     mDatabaseRef.child("Longitude").setValue(location.getLongitude());
                                 }
