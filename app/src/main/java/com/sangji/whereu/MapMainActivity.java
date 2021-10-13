@@ -30,8 +30,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MapMainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private FirebaseAuth mFirebaseAuth; //파이어베이스 인증
+    private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
 
     private FusedLocationProviderClient fusedLocationClient;    // 현재 위치를 가져오기 위한 변수
     int REQUEST_CODE = 1;
@@ -108,6 +117,12 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        //로그인 한 회원에 대한 데이터베이스 접근
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("whereu").child("UserAccount").child(firebaseUser.getUid());
+
+
         if (requestCode == REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {   // 권한요청이 허용된 경우
 
@@ -127,6 +142,8 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
                                 if (location != null) {
                                     // 파라미터로 받은 location을 통해 위도, 경도 정보를 텍스트뷰에 set.
                                     location_view.setText("위도: " + location.getLatitude() + " / 경도: " + location.getLongitude());
+                                    mDatabaseRef.child("Latitude").setValue(location.getLatitude());
+                                    mDatabaseRef.child("Longitude").setValue(location.getLongitude());
                                 }
                             }
                         });

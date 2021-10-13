@@ -61,4 +61,5 @@ public class UserAccount {
     public void setPushToken(String pushToken) {
         this.pushToken = pushToken;
     }
+
 }
