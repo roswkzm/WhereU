@@ -11,6 +11,15 @@ public class UserAccount {
     private String name;
     private String profileImageUrl;
     private String pushToken;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public String getProfileImageUrl() {
         return profileImageUrl;

@@ -100,6 +100,10 @@ public class PeopleFragment extends Fragment {
                     startActivity(intent,activityOptions.toBundle());   // 화면 전환과 동시에 윗줄의 애니메이션 실행구현
                 }
             });
+            //만약 상태메시지가 있을경우 바인딩 해주는 코드임
+            if(userAccounts.get(position).getComment() != null){
+                ((CustomViewHolder) holder).textView_commnet.setText(userAccounts.get(position).getComment());
+            }
 
         }
 
@@ -109,13 +113,15 @@ public class PeopleFragment extends Fragment {
         }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
-            public ImageView imageView;
-            public TextView textView;
+            public ImageView imageView;     //친구의 프사
+            public TextView textView;       //친구의 이름
+            public TextView textView_commnet;   //친구의 상태메세지
 
             public CustomViewHolder(View view) {
                 super(view);
                 imageView = (ImageView) view.findViewById(R.id.frienditem_imageview);
                 textView = (TextView) view.findViewById(R.id.frienditem_textview);
+                textView_commnet = (TextView) view.findViewById(R.id.frienditem_textview_comment);
             }
         }
     }
