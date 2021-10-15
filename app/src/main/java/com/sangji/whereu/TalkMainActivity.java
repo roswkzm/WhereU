@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.sangji.whereu.fragment.AccountFragment;
 import com.sangji.whereu.fragment.ChatFragment;
 import com.sangji.whereu.fragment.PeopleFragment;
 
@@ -41,6 +42,11 @@ public class TalkMainActivity extends AppCompatActivity {
                     case R.id.action_chat:
 
                         getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout,new ChatFragment()).commit();
+                        return true;
+
+                    case R.id.action_account:
+
+                        getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout,new AccountFragment()).commit();
                         return true;
 
                 }
