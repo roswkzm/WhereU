@@ -1,5 +1,6 @@
 package com.sangji.whereu.chat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +45,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class MessageActivity extends AppCompatActivity {
@@ -62,6 +65,8 @@ public class MessageActivity extends AppCompatActivity {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     private UserAccount destinationuserAccount;
+    private DatabaseReference databaseReference;    //메세지를 확인했는지 알아보기 위함
+    private  ValueEventListener valueEventListener; //메세지를 확인했는지 알아보기 위함
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,20 +192,36 @@ public class MessageActivity extends AppCompatActivity {
 
 
         }
+        //메세지를 읽어오는 코드
         void getMessageList(){
-
-            FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments");
+            valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     comments.clear();
+                    Map<String,Object> readUsersMap = new HashMap<>();
                     for(DataSnapshot item : dataSnapshot.getChildren()){
-                        comments.add(item.getValue(ChatModel.Comment.class));
+                        String key = item.getKey();
+                        ChatModel.Comment comment = item.getValue(ChatModel.Comment.class);
+                        comment.readUsers.put(uid,true);
+                        // 메세지 읽었는지 안읽었는지 판별
+                        readUsersMap.put(key,comment);
+                        comments.add(comment);
                     }
-                    // 메시지가 새로 갱신되도록 함
-                    notifyDataSetChanged();
+                    //만약 메세지를 읽은것을 확인하면
+                    FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments")
+                            .updateChildren(readUsersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                    recyclerView.scrollToPosition(comments.size() - 1); // 메시지를 보낸후 대화방의 가장 하단으로 시점이 변경됨
+                            // 메시지가 새로 갱신되도록 함
+                            notifyDataSetChanged();
+                            recyclerView.scrollToPosition(comments.size() - 1); // 메시지를 보낸후 대화방의 가장 하단으로 시점이 변경됨
+                        }
+                    });
+
+
                 }
 
                 @Override
@@ -228,6 +249,8 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
                 messageViewHolder.textView_message.setTextSize(25);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);  // 내가보낸 말풍선 우측정렬
+                setReadCounter(position,messageViewHolder.textView_readCounter_left);   //내가 보낸 메세지에서는 안읽은사람의 수가 왼쪽으로온다.
+
             }else{  // 상대방이 보낸 메시지
                 Glide.with(holder.itemView.getContext())
                         .load(destinationuserAccount.getProfileImageUrl())
@@ -238,7 +261,9 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.leftbubble);
                 messageViewHolder.textView_message.setText(comments.get(position).message);
                 messageViewHolder.textView_message.setTextSize(25);
-                messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);   // 내가보낸 말풍선 좌측정렬
+                messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);   // 상대가보낸 말풍선 좌측정렬
+                setReadCounter(position,messageViewHolder.getTextView_readCounter_right);   //상대가 보낸 메세지에서는 안읽은사람의 수가 오른쪽으로온다.
+
             }
             //체팅방에 나오는 시간설정
             long unixTime = (long) comments.get(position).timestamp;
@@ -248,11 +273,36 @@ public class MessageActivity extends AppCompatActivity {
             messageViewHolder.textView_timestamp.setText(time);
         }
 
+        //체팅방에 있는 인원에서 읽은사람은 몇명인지 안읽은사람은 몇명인지 계산하는 연산 메소드
+        void setReadCounter(int position, TextView textView){
+
+            FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String,Boolean> users = (Map<String, Boolean>) dataSnapshot.getValue();
+
+                    int count = users.size() - comments.get(position).readUsers.size();     //읽지않은사람의 숫자
+                    if(count > 0){      // 안읽은사람이 있으면 몇명인지 보여주고 모두 읽었으면 숫자를 없앰
+                        textView.setVisibility(View.VISIBLE);
+                        textView.setText(String.valueOf(count));
+                    }else{
+                        textView.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
         @Override
         public int getItemCount() {
             return comments.size();
         }
-
+        //실제 화면에 표시하는 부분연결
         private class MessageViewHolder extends RecyclerView.ViewHolder {
             public TextView textView_message;
             public TextView textview_name;
@@ -260,6 +310,8 @@ public class MessageActivity extends AppCompatActivity {
             public LinearLayout linearLayout_destination;
             public LinearLayout linearLayout_main;
             public TextView textView_timestamp;
+            public TextView textView_readCounter_left;
+            public TextView getTextView_readCounter_right;
 
             public MessageViewHolder(View view) {
                 super(view);
@@ -269,12 +321,15 @@ public class MessageActivity extends AppCompatActivity {
                 linearLayout_destination = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_destination);
                 linearLayout_main = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_main);    // 말풍선 좌우 정렬
                 textView_timestamp = (TextView)view.findViewById(R.id.messageItem_textview_timestamp);
+                textView_readCounter_left = (TextView) view.findViewById(R.id.messageItem_textview_readCounter_left);
+                getTextView_readCounter_right = (TextView) view.findViewById(R.id.messageItem_textview_readCounter_right);
             }
         }
     }
     // 체팅방에서 뒤로가기 눌렀을때 애니메이션으로 꺼지게하기
     @Override
     public void onBackPressed() {
+        databaseReference.removeEventListener(valueEventListener);
         finish();
         overridePendingTransition(R.anim.fromleft,R.anim.toright);
     }
