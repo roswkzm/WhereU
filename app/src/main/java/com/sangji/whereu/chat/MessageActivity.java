@@ -67,6 +67,7 @@ public class MessageActivity extends AppCompatActivity {
     private UserAccount destinationuserAccount;
     private DatabaseReference databaseReference;    //메세지를 확인했는지 알아보기 위함
     private  ValueEventListener valueEventListener; //메세지를 확인했는지 알아보기 위함
+    int peopleCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,23 +204,31 @@ public class MessageActivity extends AppCompatActivity {
                     Map<String,Object> readUsersMap = new HashMap<>();
                     for(DataSnapshot item : dataSnapshot.getChildren()){
                         String key = item.getKey();
-                        ChatModel.Comment comment = item.getValue(ChatModel.Comment.class);
-                        comment.readUsers.put(uid,true);
+                        ChatModel.Comment comment_origin = item.getValue(ChatModel.Comment.class);
+                        ChatModel.Comment comment_motify = item.getValue(ChatModel.Comment.class);
+                        comment_motify.readUsers.put(uid,true);
                         // 메세지 읽었는지 안읽었는지 판별
-                        readUsersMap.put(key,comment);
-                        comments.add(comment);
+                        readUsersMap.put(key,comment_motify);
+                        comments.add(comment_origin);
                     }
-                    //만약 메세지를 읽은것을 확인하면
-                    FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments")
-                            .updateChildren(readUsersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
 
-                            // 메시지가 새로 갱신되도록 함
-                            notifyDataSetChanged();
-                            recyclerView.scrollToPosition(comments.size() - 1); // 메시지를 보낸후 대화방의 가장 하단으로 시점이 변경됨
-                        }
-                    });
+                    if(!comments.get(comments.size()-1).readUsers.containsKey(uid)) {
+
+                        //만약 메세지를 읽은것을 확인하면
+                        FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("comments")
+                                .updateChildren(readUsersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                // 메시지가 새로 갱신되도록 함
+                                notifyDataSetChanged();
+                                recyclerView.scrollToPosition(comments.size() - 1); // 메시지를 보낸후 대화방의 가장 하단으로 시점이 변경됨
+                            }
+                        });
+                    }else{
+                        notifyDataSetChanged();
+                        recyclerView.scrollToPosition(comments.size() - 1); // 메시지를 보낸후 대화방의 가장 하단으로 시점이 변경됨
+                    }
 
 
                 }
@@ -276,25 +285,36 @@ public class MessageActivity extends AppCompatActivity {
         //체팅방에 있는 인원에서 읽은사람은 몇명인지 안읽은사람은 몇명인지 계산하는 연산 메소드
         void setReadCounter(int position, TextView textView){
 
-            FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Map<String,Boolean> users = (Map<String, Boolean>) dataSnapshot.getValue();
+            if(peopleCount == 0) {
+                FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Boolean> users = (Map<String, Boolean>) dataSnapshot.getValue();
+                        peopleCount = users.size();
 
-                    int count = users.size() - comments.get(position).readUsers.size();     //읽지않은사람의 숫자
-                    if(count > 0){      // 안읽은사람이 있으면 몇명인지 보여주고 모두 읽었으면 숫자를 없앰
-                        textView.setVisibility(View.VISIBLE);
-                        textView.setText(String.valueOf(count));
-                    }else{
-                        textView.setVisibility(View.INVISIBLE);
+                        int count = peopleCount - comments.get(position).readUsers.size();     //읽지않은사람의 숫자
+                        if (count > 0) {      // 안읽은사람이 있으면 몇명인지 보여주고 모두 읽었으면 숫자를 없앰
+                            textView.setVisibility(View.VISIBLE);
+                            textView.setText(String.valueOf(count));
+                        } else {
+                            textView.setVisibility(View.INVISIBLE);
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
+                    }
+                });
+            }else{
+                int count = peopleCount - comments.get(position).readUsers.size();     //읽지않은사람의 숫자
+                if (count > 0) {      // 안읽은사람이 있으면 몇명인지 보여주고 모두 읽었으면 숫자를 없앰
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(String.valueOf(count));
+                } else {
+                    textView.setVisibility(View.INVISIBLE);
                 }
-            });
+            }
         }
 
 
