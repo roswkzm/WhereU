@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.sangji.whereu.ChatModel;
 import com.sangji.whereu.R;
 import com.sangji.whereu.UserAccount;
+import com.sangji.whereu.chat.GroupMessageActivity;
 import com.sangji.whereu.chat.MessageActivity;
 
 import java.text.SimpleDateFormat;
@@ -119,26 +120,38 @@ public class ChatFragment extends Fragment {
             //메세지를 내림 차순으로 정렬후 마지막 메세지의 키값을 가져옴
             Map<String,ChatModel.Comment> commentMap = new TreeMap<>(Collections.reverseOrder());
             commentMap.putAll(chatModels.get(position).comments);
-            String lastMessageKey = (String) commentMap.keySet().toArray()[0];
-            customViewHolder.textView_last_message.setText(chatModels.get(position).comments.get(lastMessageKey).message);
+            if(commentMap.keySet().toArray().length > 0) {
 
+                String lastMessageKey = (String) commentMap.keySet().toArray()[0];
+                customViewHolder.textView_last_message.setText(chatModels.get(position).comments.get(lastMessageKey).message);
+
+
+                // 체팅방 목록의 타임스테프 출력부분
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                long unixTime = (long) chatModels.get(position).comments.get(lastMessageKey).timestamp;
+                Date date = new Date(unixTime);
+                customViewHolder.textView_timestamp.setText(simpleDateFormat.format(date));
+
+            }
             customViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = null;
+                    //채팅방에 초대되는 인원이 2명 이상이면 GroupMessageActivity에서 로직처리 1대1 채팅방이면 MessageActivity에서 로직처리함
+                    if(chatModels.get(position).users.size() > 2){
+                        intent = new Intent(view.getContext(), GroupMessageActivity.class);
+                    }else {
+                        intent = new Intent(view.getContext(), MessageActivity.class);
+                        intent.putExtra("destinationUid", destinationUsers.get(position));
+                    }
 
-                    Intent intent = new Intent(view.getContext(), MessageActivity.class);
-                    intent.putExtra("destinationUid",destinationUsers.get(position));
 
-                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright,R.anim.toleft);
-                    startActivity(intent,activityOptions.toBundle());
+                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(), R.anim.fromright, R.anim.toleft);
+                    startActivity(intent, activityOptions.toBundle());
+
+
                 }
             });
-
-            // 체팅방 목록의 타임스테프 출력부분
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-            long unixTime = (long) chatModels.get(position).comments.get(lastMessageKey).timestamp;
-            Date date = new Date(unixTime);
-            customViewHolder.textView_timestamp.setText(simpleDateFormat.format(date));
         }
 
         @Override

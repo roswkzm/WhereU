@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sangji.whereu.ChatModel;
 import com.sangji.whereu.R;
 import com.sangji.whereu.UserAccount;
 import com.sangji.whereu.chat.MessageActivity;
@@ -28,8 +31,9 @@ import com.sangji.whereu.chat.MessageActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-// 체팅
+// 체팅방에 초대할 친구
 public class SelectFriendActivity extends AppCompatActivity {
+    ChatModel chatModel = new ChatModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,17 @@ public class SelectFriendActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.selectFriendActivity_recyclerview);
         recyclerView.setAdapter(new SelectFriendRecyclerViewAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Button button = (Button) findViewById(R.id.selectFriendActivity_button);
+        button.setOnClickListener(new View.OnClickListener() {      //체팅방 만들기 버튼 눌렸을때
+            @Override
+            public void onClick(View view) {
+                String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                chatModel.users.put(myUid,true);
+
+                FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").push().setValue(chatModel);
+
+            }
+        });
     }
     class SelectFriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -101,6 +116,17 @@ public class SelectFriendActivity extends AppCompatActivity {
             if(userAccounts.get(position).getComment() != null){
                 ((CustomViewHolder) holder).textView_commnet.setText(userAccounts.get(position).getComment());
             }
+            ((CustomViewHolder) holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    //체크 된 상태
+                    if(b){
+                        chatModel.users.put(userAccounts.get(position).getIdToken(),true);
+                    }else { //체크 취소 상태
+                        chatModel.users.remove(userAccounts.get(position));
+                    }
+                }
+            });
 
         }
 
@@ -113,7 +139,7 @@ public class SelectFriendActivity extends AppCompatActivity {
             public ImageView imageView;     //친구의 프사
             public TextView textView;       //친구의 이름
             public TextView textView_commnet;   //친구의 상태메세지
-            public CheckBox checkBox;
+            public CheckBox checkBox;       //친구별 체크박스
 
             public CustomViewHolder(View view) {
                 super(view);

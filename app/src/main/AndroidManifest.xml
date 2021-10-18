@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".chat.GroupMessageActivity"
+            android:exported="false" />
+        <activity
             android:name=".fragment.SelectFriendActivity"
             android:exported="false" />
         <activity
