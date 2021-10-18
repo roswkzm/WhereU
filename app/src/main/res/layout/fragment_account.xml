@@ -13,7 +13,7 @@
         android:text="현재 상태메세지" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/now_userComment"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
