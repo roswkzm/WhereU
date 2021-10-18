@@ -1,25 +1,21 @@
-//친구추가 부분
 package com.sangji.whereu.fragment;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import android.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,30 +28,22 @@ import com.sangji.whereu.chat.MessageActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PeopleFragment extends Fragment {
-    @Nullable
+// 체팅
+public class SelectFriendActivity extends AppCompatActivity {
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_people,container,false);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.peoplefragment_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
-        recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_friend);
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.peoplefragment_floatingButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(view.getContext(),SelectFriendActivity.class));
-            }
-        });
-
-        return view;
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.selectFriendActivity_recyclerview);
+        recyclerView.setAdapter(new SelectFriendRecyclerViewAdapter());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-    class PeopleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    class SelectFriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         List<UserAccount> userAccounts;
-        public PeopleFragmentRecyclerViewAdapter() {
+        public SelectFriendRecyclerViewAdapter() {
             userAccounts = new ArrayList<>();
             final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             FirebaseDatabase.getInstance().getReference().child("whereu").child("UserAccount").addValueEventListener(new ValueEventListener() {
@@ -85,7 +73,7 @@ public class PeopleFragment extends Fragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend_select,parent,false);
 
             return new CustomViewHolder(view);
         }
@@ -125,12 +113,14 @@ public class PeopleFragment extends Fragment {
             public ImageView imageView;     //친구의 프사
             public TextView textView;       //친구의 이름
             public TextView textView_commnet;   //친구의 상태메세지
+            public CheckBox checkBox;
 
             public CustomViewHolder(View view) {
                 super(view);
                 imageView = (ImageView) view.findViewById(R.id.frienditem_imageview);
                 textView = (TextView) view.findViewById(R.id.frienditem_textview);
                 textView_commnet = (TextView) view.findViewById(R.id.frienditem_textview_comment);
+                checkBox = (CheckBox) view.findViewById(R.id.friendItem_checkbox);
             }
         }
     }

@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_foreground"
@@ -14,6 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity
+            android:name=".fragment.SelectFriendActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -24,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".chat.MessageActivity"
             android:windowSoftInputMode="adjustNothing" />
@@ -32,6 +34,7 @@
         <activity android:name=".TalkMainActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
