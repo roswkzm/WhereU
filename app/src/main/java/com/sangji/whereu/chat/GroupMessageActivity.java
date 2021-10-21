@@ -6,12 +6,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,10 +31,13 @@ import com.sangji.whereu.ChatModel;
 import com.sangji.whereu.R;
 import com.sangji.whereu.UserAccount;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 //단체 채팅방 틀 만들기
 public class GroupMessageActivity extends AppCompatActivity {
@@ -39,9 +48,9 @@ public class GroupMessageActivity extends AppCompatActivity {
     EditText editText;
 
 
-    private UserAccount destinationuserAccount;
     private DatabaseReference databaseReference;    //메세지를 확인했는지 알아보기 위함
-    private  ValueEventListener valueEventListener; //메세지를 확인했는지 알아보기 위함
+    private ValueEventListener valueEventListener; //메세지를 확인했는지 알아보기 위함
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     private RecyclerView recyclerView;
 
@@ -58,8 +67,13 @@ public class GroupMessageActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("whereu").child("UserAccount").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                users = (Map<String, UserAccount>) dataSnapshot.getValue();
+                for(DataSnapshot item : dataSnapshot.getChildren()){
+                    users.put(item.getKey(),item.getValue(UserAccount.class));
+                }
                 init();
+                recyclerView = findViewById(R.id.groupMessageActivity_recyclerview);
+                recyclerView.setAdapter(new GroupMessageRecyclerViewAdapter());
+                recyclerView.setLayoutManager(new LinearLayoutManager(GroupMessageActivity.this));
             }
 
             @Override
@@ -67,9 +81,6 @@ public class GroupMessageActivity extends AppCompatActivity {
 
             }
         });
-        recyclerView = findViewById(R.id.groupMessageActivity_recyclerview);
-        recyclerView.setAdapter(new GroupMessageRecyclerViewAdapter());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
     void init(){
         Button button = (Button) findViewById(R.id.groupMessageActivity_button);
@@ -154,6 +165,37 @@ public class GroupMessageActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+            GroupMessageViewHolder messageViewHolder = ((GroupMessageViewHolder)holder);
+
+            // 내가 보낸 메시지
+            if(comments.get(position).uid.equals(uid)){
+                messageViewHolder.textView_message.setText(comments.get(position).message);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.rightbubble);
+                messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
+                messageViewHolder.textView_message.setTextSize(25);
+                messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);  // 내가보낸 말풍선 우측정렬
+                //setReadCounter(position,messageViewHolder.textView_readCounter_left);   //내가 보낸 메세지에서는 안읽은사람의 수가 왼쪽으로온다.
+
+            }else{  // 상대방이 보낸 메시지
+                Glide.with(holder.itemView.getContext())
+                        .load(users.get(comments.get(position).uid).getProfileImageUrl())
+                        .apply(new RequestOptions().circleCrop())
+                        .into(messageViewHolder.imageView_profile);
+                messageViewHolder.textview_name.setText(users.get(comments.get(position).uid).getName());
+                messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.leftbubble);
+                messageViewHolder.textView_message.setText(comments.get(position).message);
+                messageViewHolder.textView_message.setTextSize(25);
+                messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);   // 상대가보낸 말풍선 좌측정렬
+                //setReadCounter(position,messageViewHolder.getTextView_readCounter_right);   //상대가 보낸 메세지에서는 안읽은사람의 수가 오른쪽으로온다.
+
+            }
+            //체팅방에 나오는 시간설정
+            long unixTime = (long) comments.get(position).timestamp;
+            Date date = new Date(unixTime);
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            String time = simpleDateFormat.format(date);
+            messageViewHolder.textView_timestamp.setText(time);
         }
 
         @Override
@@ -162,8 +204,27 @@ public class GroupMessageActivity extends AppCompatActivity {
         }
 
         private class GroupMessageViewHolder extends RecyclerView.ViewHolder {
+
+            public TextView textView_message;
+            public TextView textview_name;
+            public ImageView imageView_profile;
+            public LinearLayout linearLayout_destination;
+            public LinearLayout linearLayout_main;
+            public TextView textView_timestamp;
+            public TextView textView_readCounter_left;
+            public TextView getTextView_readCounter_right;
+
             public GroupMessageViewHolder(View view) {
                 super(view);
+
+                textView_message = (TextView)view.findViewById(R.id.messageItem_textView_message);
+                textview_name = (TextView)view.findViewById(R.id.messageItem_textview_name);
+                imageView_profile = (ImageView)view.findViewById(R.id.messageItem_imageview_profile);
+                linearLayout_destination = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_destination);
+                linearLayout_main = (LinearLayout)view.findViewById(R.id.messageItem_linearlayout_main);    // 말풍선 좌우 정렬
+                textView_timestamp = (TextView)view.findViewById(R.id.messageItem_textview_timestamp);
+                textView_readCounter_left = (TextView) view.findViewById(R.id.messageItem_textview_readCounter_left);
+                getTextView_readCounter_right = (TextView) view.findViewById(R.id.messageItem_textview_readCounter_right);
             }
         }
     }
