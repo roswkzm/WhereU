@@ -155,7 +155,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot item : dataSnapshot.getChildren()){
                     ChatModel chatModel = item.getValue(ChatModel.class);
-                    if(chatModel.users.containsKey(destinationUid)){
+                    if(chatModel.users.containsKey(destinationUid) && chatModel.users.size() == 2){
                         chatRoomUid = item.getKey();
                         button.setEnabled(true);
                         recyclerView.setLayoutManager(new LinearLayoutManager(MessageActivity.this));
@@ -211,7 +211,7 @@ public class MessageActivity extends AppCompatActivity {
                         readUsersMap.put(key,comment_motify);
                         comments.add(comment_origin);
                     }
-
+                    if(comments.size() == 0){return;}
                     if(!comments.get(comments.size()-1).readUsers.containsKey(uid)) {
 
                         //만약 메세지를 읽은것을 확인하면
