@@ -10,12 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sangji.whereu.R;
+import com.sangji.whereu.UserAccount;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,12 +31,37 @@ import java.util.Map;
 //상태메세지 부분(3개의 바텀네비게이션 중 제일 오른쪽꺼)
 public class AccountFragment extends Fragment {
 
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
+    UserAccount userAccount;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account,container,false);
 
         Button button = view.findViewById(R.id.accountFragment_button_comment);
+        TextView userComment = view.findViewById(R.id.now_userComment);
+
+        FirebaseAuth myFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = myFirebaseAuth.getCurrentUser();
+        DatabaseReference myDatabaseRef = FirebaseDatabase.getInstance().getReference("whereu").child("UserAccount").child(firebaseUser.getUid());
+
+        myDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userAccount = snapshot.getValue(UserAccount.class);
+                userComment.setText(userAccount.getComment());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
