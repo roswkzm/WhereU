@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -80,6 +81,8 @@ public class MessageActivity extends AppCompatActivity {
         editText = findViewById(R.id.messageActivity_editText);
 
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_recyclerview);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);     // 키보드가 레이아웃을 가리는 문제 해결
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
