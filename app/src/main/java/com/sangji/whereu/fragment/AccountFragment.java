@@ -78,6 +78,7 @@ public class AccountFragment extends Fragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.dialog_comment,null);
         final EditText editText = (EditText) view.findViewById(R.id.commentDialog_edittext);
+        editText.setText(userAccount.getComment());
         builder.setView(view).setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
