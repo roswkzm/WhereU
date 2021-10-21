@@ -27,10 +27,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.sangji.whereu.ChatModel;
+import com.sangji.whereu.NotificationModel;
 import com.sangji.whereu.R;
 import com.sangji.whereu.UserAccount;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +64,8 @@ public class GroupMessageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     List<ChatModel.Comment> comments = new ArrayList<>();
+
+    int peopleCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +106,64 @@ public class GroupMessageActivity extends AppCompatActivity {
                         .push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        editText.setText("");
+                        FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(destinationRoom).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Map<String,Boolean> map = (Map<String, Boolean>) dataSnapshot.getValue();
+
+                                for(String item :map.keySet()){
+                                    if(item.equals(uid)){
+                                        continue;
+                                    }
+                                    sendGcm(users.get(item).getPushToken());
+                                }
+                                editText.setText("");
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 });
             }
         });
     }
+
+    void sendGcm(String pushToken){
+        Gson gson = new Gson();
+
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        NotificationModel notificationModel = new NotificationModel();
+        notificationModel.to = pushToken;
+        notificationModel.notification.title = userName;
+        notificationModel.notification.body = editText.getText().toString();
+        notificationModel.data.title = userName;
+        notificationModel.data.body = editText.getText().toString();
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"),gson.toJson(notificationModel));
+
+        Request request = new Request.Builder()
+                .header("Content-Type","application/json")
+                .addHeader("Authorization","key=AAAA-296ywk:APA91bFk4aEgmtoZrMx-0JzVZrx0Ka4qADgEcQmlgd0uJBfo78HaH7ExyjLoUfvib-hfYj3JS2UhKurCAxotYKJ-Jy8P9ykkIM7oH9Wy_nzpmbnIkf0iQCKfZbURpFnQOdE9SCzyHrTg")
+                .url("https://fcm.googleapis.com/fcm/send")
+                .post(requestBody)
+                .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+            }
+        });
+    }
+
     class GroupMessageRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         public GroupMessageRecyclerViewAdapter(){
@@ -174,7 +237,7 @@ public class GroupMessageActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
                 messageViewHolder.textView_message.setTextSize(25);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);  // 내가보낸 말풍선 우측정렬
-                //setReadCounter(position,messageViewHolder.textView_readCounter_left);   //내가 보낸 메세지에서는 안읽은사람의 수가 왼쪽으로온다.
+                setReadCounter(position,messageViewHolder.textView_readCounter_left);   //내가 보낸 메세지에서는 안읽은사람의 수가 왼쪽으로온다.
 
             }else{  // 상대방이 보낸 메시지
                 Glide.with(holder.itemView.getContext())
@@ -187,7 +250,7 @@ public class GroupMessageActivity extends AppCompatActivity {
                 messageViewHolder.textView_message.setText(comments.get(position).message);
                 messageViewHolder.textView_message.setTextSize(25);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);   // 상대가보낸 말풍선 좌측정렬
-                //setReadCounter(position,messageViewHolder.getTextView_readCounter_right);   //상대가 보낸 메세지에서는 안읽은사람의 수가 오른쪽으로온다.
+                setReadCounter(position,messageViewHolder.getTextView_readCounter_right);   //상대가 보낸 메세지에서는 안읽은사람의 수가 오른쪽으로온다.
 
             }
             //체팅방에 나오는 시간설정
@@ -196,6 +259,41 @@ public class GroupMessageActivity extends AppCompatActivity {
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             String time = simpleDateFormat.format(date);
             messageViewHolder.textView_timestamp.setText(time);
+        }
+
+        //체팅방에 있는 인원에서 읽은사람은 몇명인지 안읽은사람은 몇명인지 계산하는 연산 메소드
+        void setReadCounter(int position, TextView textView){
+
+            if(peopleCount == 0) {
+                FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").child(destinationRoom).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Boolean> users = (Map<String, Boolean>) dataSnapshot.getValue();
+                        peopleCount = users.size();
+
+                        int count = peopleCount - comments.get(position).readUsers.size();     //읽지않은사람의 숫자
+                        if (count > 0) {      // 안읽은사람이 있으면 몇명인지 보여주고 모두 읽었으면 숫자를 없앰
+                            textView.setVisibility(View.VISIBLE);
+                            textView.setText(String.valueOf(count));
+                        } else {
+                            textView.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }else{
+                int count = peopleCount - comments.get(position).readUsers.size();     //읽지않은사람의 숫자
+                if (count > 0) {      // 안읽은사람이 있으면 몇명인지 보여주고 모두 읽었으면 숫자를 없앰
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(String.valueOf(count));
+                } else {
+                    textView.setVisibility(View.INVISIBLE);
+                }
+            }
         }
 
         @Override
