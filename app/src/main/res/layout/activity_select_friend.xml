@@ -14,8 +14,11 @@
 
     <Button
         android:id="@+id/selectFriendActivity_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="채팅방 만들기" />
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="채팅방 만들기"
+        android:background="@drawable/btn"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

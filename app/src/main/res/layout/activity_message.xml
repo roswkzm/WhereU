@@ -32,11 +32,11 @@
 
     <Button
         android:id="@+id/messageActivity_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:text="전송"
-        app:backgroundTint="@android:color/darker_gray" />
+        android:background="@drawable/btn"
+        android:text="전송" />
 
 </RelativeLayout>

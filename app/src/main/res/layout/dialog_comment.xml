@@ -7,9 +7,10 @@
 
     <ImageView
         android:src="@mipmap/ic_launcher_foreground"
-        android:background="#FFFFBB33"
+        android:background="@drawable/btn"
         android:layout_width="match_parent"
-        android:layout_height="64dp"/>
+        android:layout_height="64dp"
+        />
     <EditText
         android:id="@+id/commentDialog_edittext"
         android:hint="상태 메세지를 입력하세요"
