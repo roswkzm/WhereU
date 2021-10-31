@@ -1,37 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="280dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
         android:layout_gravity="top"
+        android:layout_marginTop="0dp"
         android:gravity="center"
-        android:text="현재 상태메세지"
-        android:layout_marginTop="0dp"/>
-
-    <TextView
-        android:id="@+id/now_userComment"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:text=""
-        android:gravity="center"
-        android:layout_marginTop="0dp"/>
+        android:text="현재 상태메세지" />
 
     <Button
         android:id="@+id/accountFragment_button_comment"
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="200dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="-10dp"
         android:background="@drawable/btn"
         android:gravity="center"
         android:text="수정" />
+
+    <TextView
+        android:id="@+id/now_userComment"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-30dp"
+        android:layout_marginRight="56dp"
+        android:gravity="center"
+        android:text="" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="295dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/profile" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:text="이름"
+        />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:text="아이디"
+        />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:text="토큰"
+        />
 
 
 </LinearLayout>

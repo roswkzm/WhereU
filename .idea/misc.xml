@@ -32,10 +32,12 @@
         <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/activity_talk_main.xml" value="0.19" />
         <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/dialog_comment.xml" value="0.33" />
         <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/fragment_account.xml" value="0.33" />
-        <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/fragment_chat.xml" value="0.18" />
+        <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/fragment_chat.xml" value="0.33" />
         <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/fragment_people.xml" value="0.18" />
         <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/item_chat.xml" value="0.33" />
         <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/item_friend.xml" value="0.31354166666666666" />
+        <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/item_friend_select.xml" value="0.33469202898550726" />
+        <entry key="..\:/Users/vlvk6/AndroidStudioProjects/android_project/app/src/main/res/layout/item_message.xml" value="0.18840579710144928" />
       </map>
     </option>
   </component>
