@@ -38,15 +38,15 @@
         android:text="" />
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="295dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
+        android:id="@+id/show_img"
+        android:layout_width="210dp"
+        android:layout_height="194dp"
         android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         app:srcCompat="@drawable/profile" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/show_name"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="50dp"
@@ -54,7 +54,7 @@
         />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/show_email"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
@@ -62,7 +62,7 @@
         />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/show_uid"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"

@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +37,7 @@ public class AccountFragment extends Fragment {
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
     UserAccount userAccount;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -42,6 +45,11 @@ public class AccountFragment extends Fragment {
 
         Button button = view.findViewById(R.id.accountFragment_button_comment);
         TextView userComment = view.findViewById(R.id.now_userComment);
+        ImageView show_img = view.findViewById(R.id.show_img);
+        TextView show_name = view.findViewById(R.id.show_name);
+        TextView show_email = view.findViewById(R.id.show_email);
+        TextView show_uid = view.findViewById(R.id.show_uid);
+
 
         FirebaseAuth myFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = myFirebaseAuth.getCurrentUser();
@@ -52,6 +60,15 @@ public class AccountFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userAccount = snapshot.getValue(UserAccount.class);
                 userComment.setText(userAccount.getComment());
+
+                Glide.with(AccountFragment.this)
+                        .load(userAccount.getProfileImageUrl())
+                        .override(300,300)
+                        .fitCenter().into(show_img);
+
+                show_name.setText(userAccount.getName());
+                show_email.setText(userAccount.getEmailId());
+                show_uid.setText(userAccount.getIdToken());
             }
 
             @Override
