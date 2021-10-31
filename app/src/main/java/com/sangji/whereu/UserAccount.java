@@ -12,6 +12,16 @@ public class UserAccount {
     private String profileImageUrl;
     private String pushToken;
     private String comment;
+    private String Latitude;
+    private String Longitude;
+
+    public String getLatitude() { return Latitude; }
+
+    public void setLatitude(String latitude) { this.Latitude = latitude; }
+
+    public String getLongitude() { return Longitude; }
+
+    public void setLongitude(String longitude) { this.Longitude = longitude; }
 
     public String getComment() {
         return comment;
