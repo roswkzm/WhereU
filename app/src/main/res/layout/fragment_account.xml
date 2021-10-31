@@ -8,32 +8,30 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         android:layout_gravity="top"
-        android:layout_weight="0.5"
         android:gravity="center"
         android:text="현재 상태메세지"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="0dp"/>
 
     <TextView
         android:id="@+id/now_userComment"
-        android:layout_width="411dp"
-        android:layout_height="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:text=""
         android:gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="0dp"/>
 
     <Button
         android:id="@+id/accountFragment_button_comment"
         android:layout_width="80dp"
-        android:layout_height="16dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.03"
+        android:layout_marginBottom="200dp"
         android:background="@drawable/btn"
         android:gravity="center"
-        android:text="수정"
-        android:layout_marginBottom="200dp"/>
+        android:text="수정" />
+
 
 </LinearLayout>
