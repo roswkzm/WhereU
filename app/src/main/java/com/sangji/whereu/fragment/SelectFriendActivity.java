@@ -24,7 +24,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sangji.whereu.ChatModel;
+import com.sangji.whereu.LoginActivity;
 import com.sangji.whereu.R;
+import com.sangji.whereu.RegisterActivity;
+import com.sangji.whereu.TalkMainActivity;
 import com.sangji.whereu.UserAccount;
 import com.sangji.whereu.chat.MessageActivity;
 
@@ -51,6 +54,8 @@ public class SelectFriendActivity extends AppCompatActivity {
                 chatModel.users.put(myUid,true);
 
                 FirebaseDatabase.getInstance().getReference().child("whereu").child("chatrooms").push().setValue(chatModel);
+                Intent intent = new Intent(SelectFriendActivity.this, TalkMainActivity.class);
+                startActivity(intent);
 
             }
         });
