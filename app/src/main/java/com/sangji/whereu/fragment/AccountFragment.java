@@ -1,10 +1,16 @@
 package com.sangji.whereu.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 import com.sangji.whereu.R;
 import com.sangji.whereu.UserAccount;
 
@@ -35,7 +46,11 @@ public class AccountFragment extends Fragment {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
+    private ImageView show_img;
+    private Uri imageUri;
+    private static final int PICK_FROM_ALBUM = 10;
     UserAccount userAccount;
+
 
 
     @Nullable
@@ -45,15 +60,15 @@ public class AccountFragment extends Fragment {
 
         Button button = view.findViewById(R.id.accountFragment_button_comment);
         TextView userComment = view.findViewById(R.id.now_userComment);
-        ImageView show_img = view.findViewById(R.id.show_img);
+        show_img = view.findViewById(R.id.show_img);
         TextView show_name = view.findViewById(R.id.show_name);
         TextView show_email = view.findViewById(R.id.show_email);
         TextView show_uid = view.findViewById(R.id.show_uid);
 
-
         FirebaseAuth myFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = myFirebaseAuth.getCurrentUser();
         DatabaseReference myDatabaseRef = FirebaseDatabase.getInstance().getReference("whereu").child("UserAccount").child(firebaseUser.getUid());
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("whereu");
 
         myDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -77,6 +92,14 @@ public class AccountFragment extends Fragment {
             }
         });
 
+        show_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent,PICK_FROM_ALBUM);
+            }
+        });
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +111,53 @@ public class AccountFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK){
+            show_img.setImageURI(data.getData());
+            imageUri = data.getData();
+        }
+        FirebaseStorage.getInstance().getReference().child("whereu").child("UserAccount").child(mFirebaseAuth.getInstance().getCurrentUser().getUid())
+                .putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        Task<Uri> imageUrl = task.getResult().getStorage().getDownloadUrl();
+                        while(!imageUrl.isComplete());
+                        String strImage = imageUrl.getResult().toString();
+                        Log.d("strImage check", "onComplete: strImage" + strImage);
+                        UserAccount account = new UserAccount();
+                        Map<String, Object> taskMap = new HashMap<String, Object>();
+                        taskMap.put("profileImageUrl", strImage);
+                        account.setProfileImageUrl(strImage);   // 이미지 주소
+                        Log.d("account check", "onComplete: strImage :" + account.getProfileImageUrl());
+                        // setValue는 database에 insert하는 행위다.
+                        mDatabaseRef.child("UserAccount").child(mFirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(taskMap);
+                    }
+                }
+        );
+    }
+    /*
+
+    FirebaseStorage.getInstance().getReference().child("whereu").child("UserAccount").child(mFirebaseAuth.getInstance().getCurrentUser().getUid()).putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                Task<Uri> imageUrl = task.getResult().getStorage().getDownloadUrl();
+                while(!imageUrl.isComplete());
+                String strImage = imageUrl.getResult().toString();
+                Log.d("strImage check", "onComplete: strImage" + strImage);
+                UserAccount account = new UserAccount();
+                account.setProfileImageUrl(strImage);   // 이미지 주소
+                Log.d("account check", "onComplete: strImage :" + account.getProfileImageUrl());
+                // setValue는 database에 insert하는 행위다.
+                mDatabaseRef.child("UserAccount").child(mFirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(account);
+            }
+        }
+        );
+     */
+
+
+
     void showDialog(Context context){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
