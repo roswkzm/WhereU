@@ -37,6 +37,9 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MapMainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private FirebaseAuth mFirebaseAuth; //파이어베이스 인증
@@ -142,10 +145,17 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
                                 if (location != null) {
                                     // 파라미터로 받은 location을 통해 위도, 경도 정보를 텍스트뷰에 set.
                                     location_view.setText("위도: " + location.getLatitude() + " / 경도: " + location.getLongitude());
-                                    
+
+                                    UserAccount account = new UserAccount();
+                                    Map<String, Object> taskMap = new HashMap<String, Object>();
+                                    taskMap.put("위도", location.getLatitude());
+                                    taskMap.put("경도", location.getLongitude());
+                                    account.setLatitude(location.getLatitude());
+                                    account.setLongitude(location.getLongitude());
+
+
                                     //위치 정보 데이터베이스에 저장
-                                    mDatabaseRef.child("Latitude").setValue(location.getLatitude());
-                                    mDatabaseRef.child("Longitude").setValue(location.getLongitude());
+                                    mDatabaseRef.updateChildren(taskMap);
                                 }
                             }
                         });
