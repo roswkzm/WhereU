@@ -64,6 +64,9 @@ public class AccountFragment extends Fragment {
         TextView show_name = view.findViewById(R.id.show_name);
         TextView show_email = view.findViewById(R.id.show_email);
         TextView show_uid = view.findViewById(R.id.show_uid);
+        Button btn = view.findViewById(R.id.btn);
+
+
 
         FirebaseAuth myFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = myFirebaseAuth.getCurrentUser();
@@ -109,6 +112,15 @@ public class AccountFragment extends Fragment {
             }
         });
 
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // 전화 걸기
+                Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:119"));
+                startActivity(mIntent);
+            }
+        });
         return view;
     }
 

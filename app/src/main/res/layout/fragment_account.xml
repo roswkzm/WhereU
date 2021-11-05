@@ -12,8 +12,10 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_gravity="top"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
+        android:textSize="15dp"
+        android:textColor="@color/black"
         android:text="현재 상태메세지" />
 
     <Button
@@ -33,44 +35,73 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="-30dp"
-        android:layout_marginRight="56dp"
+        android:layout_marginRight="40dp"
         android:gravity="center"
+        android:textColor="@color/black"
         android:text="" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/show_img"
         android:layout_width="210dp"
         android:layout_height="194dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        app:srcCompat="@drawable/profile" />
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/profile"
+        android:background="@drawable/btnone"/>
 
 
     <TextView
         android:id="@+id/show_name"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
         android:text="이름"
-        />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/show_email"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="00dp"
+        android:gravity="center"
         android:text="아이디"
-        />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/show_uid"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="0dp"
         android:text="토큰"
-        />
+        android:textSize="0dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/black" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="-200dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btnone"
+        android:textColor="@color/black"
+        android:text="프로필변경"
+        android:textSize="14dp" />
 
-
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="165dp"
+        android:background="@drawable/sos"
+        android:text="!sos!\n위급 시 눌러주세요!"
+        android:textColor="@color/black"
+        android:textSize="14dp" />
 
 </LinearLayout>

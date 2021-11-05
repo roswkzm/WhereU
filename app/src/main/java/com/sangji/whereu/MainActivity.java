@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -71,6 +72,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,MapMainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        Button btn;
+        btn = (Button)findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // 전화 걸기
+                Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:119"));
+                startActivity(mIntent);
             }
         });
 
