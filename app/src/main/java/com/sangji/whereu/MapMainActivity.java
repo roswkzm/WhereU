@@ -80,6 +80,7 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        UserAccount account = new UserAccount();
         LatLng location = new LatLng(37.370467, 127.928695); //상지대학교 마커
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.title("상지대학교");
