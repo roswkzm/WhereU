@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         switch (v.getId()) {
             case R.id.button3:
-                intent.setData(Uri.parse("https://github.com/"));
+                intent.setData(Uri.parse("https://whereu.netlify.app/"));
                 startActivity(intent);
                 break;
         }
