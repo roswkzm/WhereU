@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Button button3 = findViewById(R.id.button3);
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         btn_talk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,TalkMainActivity.class);
+                Intent intent = new Intent(MainActivity.this, TalkMainActivity.class);
                 startActivity(intent);
             }
         });
@@ -70,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,MapMainActivity.class);
+                Intent intent = new Intent(MainActivity.this, MapMainActivity.class);
                 startActivity(intent);
             }
         });
 
 
         Button btn;
-        btn = (Button)findViewById(R.id.button);
+        btn = (Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +88,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(mIntent);
             }
         });
+    }
 
+    public void onClick(View v) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        switch (v.getId()) {
+            case R.id.button3:
+                intent.setData(Uri.parse("https://github.com/"));
+                startActivity(intent);
+                break;
+        }
     }
 }
