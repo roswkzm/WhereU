@@ -47,6 +47,7 @@ public class AccountFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
     private ImageView show_img;
+    private Button changeProfileImage_Btn;
     private Uri imageUri;
     private static final int PICK_FROM_ALBUM = 10;
     UserAccount userAccount;
@@ -61,6 +62,7 @@ public class AccountFragment extends Fragment {
         Button button = view.findViewById(R.id.accountFragment_button_comment);
         TextView userComment = view.findViewById(R.id.now_userComment);
         show_img = view.findViewById(R.id.show_img);
+        changeProfileImage_Btn = view.findViewById(R.id.changeProfileImage_Btn);
         TextView show_name = view.findViewById(R.id.show_name);
         TextView show_email = view.findViewById(R.id.show_email);
         TextView show_uid = view.findViewById(R.id.show_uid);
@@ -95,7 +97,7 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        show_img.setOnClickListener(new View.OnClickListener() {
+        changeProfileImage_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
