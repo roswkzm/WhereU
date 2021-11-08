@@ -24,11 +24,15 @@
 
     <EditText
         android:id="@+id/messageActivity_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/messageActivity_button" />
+        android:layout_marginRight="2dp"
+        android:layout_toLeftOf="@id/messageActivity_button"
+        android:background="@drawable/chat"
+        android:gravity="center"
+        android:textSize="13dp" />
 
     <Button
         android:id="@+id/messageActivity_button"
@@ -36,7 +40,8 @@
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/btn"
-        android:text="전송" />
+        android:background="@drawable/circle"
+        android:text="전송"
+        android:textSize="13dp" />
 
 </RelativeLayout>
