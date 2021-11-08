@@ -15,7 +15,7 @@
     </style>
 
     <style name="SplashTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">@drawable/startlogo</item>
+        <item name="android:windowBackground">@drawable/logo2</item>
     </style>
 
 </resources>

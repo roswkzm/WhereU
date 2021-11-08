@@ -15,7 +15,7 @@
         android:layout_marginTop="248dp"
         android:background="@drawable/textvw1"
         android:ems="10"
-        android:hint="E-MAIL"
+        android:hint="E-mail"
         android:inputType="textEmailAddress"
         android:gravity="center"
         android:textSize="13dp"
@@ -72,32 +72,6 @@
         app:layout_constraintTop_toBottomOf="@+id/checkBox"
         app:layout_constraintVertical_bias="0.137" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="74dp"
-        android:layout_height="91dp"
-        android:layout_marginTop="108dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.145"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo6" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="179dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.882"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/asdf" />
-
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="75dp"
@@ -112,17 +86,6 @@
         app:layout_constraintStart_toStartOf="@+id/et_pwd"
         app:layout_constraintTop_toBottomOf="@+id/et_pwd"
         tools:ignore="MissingConstraints,UnknownId" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="206dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="-17dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.567"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:srcCompat="@drawable/zxcv" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -145,6 +108,16 @@
         app:layout_constraintStart_toStartOf="@+id/et_pwd"
         app:layout_constraintTop_toTopOf="@+id/et_pwd"
         app:srcCompat="@drawable/pw" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="321dp"
+        android:layout_height="149dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logoo2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
