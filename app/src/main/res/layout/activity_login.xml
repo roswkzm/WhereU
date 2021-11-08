@@ -15,7 +15,7 @@
         android:layout_marginTop="248dp"
         android:background="@drawable/textvw1"
         android:ems="10"
-        android:hint="E-mail"
+        android:hint="E-MAIL"
         android:inputType="textEmailAddress"
         android:gravity="center"
         android:textSize="13dp"
