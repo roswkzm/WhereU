@@ -27,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -76,27 +77,35 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         UserAccount account = new UserAccount();
-        LatLng location = new LatLng(37.370467, 127.928695); //상지대학교 마커
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("상지대학교");
-        markerOptions.snippet("대학교");
-        markerOptions.position(location);
-        googleMap.addMarker(markerOptions);
+        Marker aMarker, bMarker, cMarker;
+        //LatLng location = new LatLng(37.37152630288073, 127.92825294435912); //상지대학교 마커
+        //LatLng location1 = new LatLng(42.5318244, -83.1187894); //상지대학교 마커
+        LatLng amartPoint = new LatLng(37.37152630288073, 127.92825294435912);
+        LatLng bmartPoint = new LatLng(42.5318244, -83.1187894);
+        aMarker = googleMap.addMarker(new MarkerOptions()
+                .position(amartPoint)
+                .title("허우재")
+        );
+        aMarker.showInfoWindow();
+        bMarker = googleMap.addMarker(new MarkerOptions()
+                .position(bmartPoint)
+                .title("이진영")
+
+        );
+        bMarker.showInfoWindow();
 
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,16));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,16)); //애니메이션 카메라 꾸밈
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(amartPoint,16)); //애니메이션 카메라 꾸밈
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);}
         else{
             checkLocationPermissionWithRationale();}
         }
-
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     private void checkLocationPermissionWithRationale() {
