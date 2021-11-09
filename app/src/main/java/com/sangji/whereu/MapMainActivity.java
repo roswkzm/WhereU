@@ -82,10 +82,8 @@ public class MapMainActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         UserAccount account = new UserAccount();
         Marker aMarker, bMarker, cMarker;
-        //LatLng location = new LatLng(37.37152630288073, 127.92825294435912); //상지대학교 마커
-        //LatLng location1 = new LatLng(42.5318244, -83.1187894); //상지대학교 마커
-        LatLng amartPoint = new LatLng(37.37152630288073, 127.92825294435912);
-        LatLng bmartPoint = new LatLng(42.5318244, -83.1187894);
+        LatLng amartPoint = new LatLng(37.37152630288073, 127.92825294435912);  //허우재 위치
+        LatLng bmartPoint = new LatLng(42.5318244, -83.1187894);    //이진영 위치
         aMarker = googleMap.addMarker(new MarkerOptions()
                 .position(amartPoint)
                 .title("허우재")
