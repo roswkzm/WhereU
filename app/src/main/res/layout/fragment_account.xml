@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
 
@@ -12,76 +13,55 @@
         android:layout_width="210dp"
         android:layout_height="194dp"
         android:layout_gravity="center"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="170dp"
         android:background="@drawable/circle"
         android:scaleType="centerInside"
         app:srcCompat="@drawable/profile" />
 
     <TextView
         android:id="@+id/now_userComment"
-        android:layout_width="280dp"
+        android:layout_width="270dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/chat"
         android:gravity="center"
         android:text=""
+        android:textSize="13dp"
         android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/accountFragment_button_comment"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="-60dp"
+        android:background="@drawable/btn"
+        android:gravity="center"
+        android:text="수정"
+        android:textColor="@color/black"
+        android:textSize="13dp" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="280dp"
+        android:layout_width="270dp"
         android:layout_height="30dp"
         android:layout_gravity="top"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="-60dp"
+        android:layout_marginTop="-55dp"
         android:background="@drawable/chat"
         android:gravity="center"
         android:text="현재 상태메세지"
         android:textColor="@color/black"
         android:textSize="13dp" />
 
-    <Button
-        android:id="@+id/accountFragment_button_comment"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="-17dp"
-        android:background="@drawable/btn"
-        android:gravity="center"
-        android:text="수정"
-        android:textSize="13dp"
-        android:textColor="@color/black"/>
-
-    <TextView
-        android:id="@+id/show_name"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="35dp"
-        android:gravity="center"
-        android:text="이름"
-        android:textSize="13dp"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/show_email"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="-14dp"
-        android:gravity="center"
-        android:text="아이디"
-        android:textSize="13dp"
-        android:textColor="@color/black" />
-
     <TextView
         android:id="@+id/show_uid"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="200dp"
         android:text="토큰"
         android:textSize="0dp"
         android:layout_gravity="center"
@@ -92,7 +72,7 @@
         android:id="@+id/changeProfileImage_Btn"
         android:layout_width="80dp"
         android:layout_height="35dp"
-        android:layout_marginTop="-310dp"
+        android:layout_marginTop="-330dp"
         android:layout_gravity="center"
         android:background="@drawable/btn"
         android:textColor="@color/black"
@@ -101,13 +81,51 @@
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="170dp"
+        android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="140dp"
         android:background="@drawable/sos"
-        android:text="          !sos!\n               위급 시 눌러주세요!"
+        android:text="!sos!\n위급 시 눌러주세요!"
         android:textColor="@color/black"
         android:textSize="13dp" />
+
+    <ImageView
+        android:id="@+id/imageView20"
+        android:layout_width="140dp"
+        android:layout_height="110dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-503dp"
+        app:srcCompat="@drawable/aaaaaa1" />
+
+    <TextView
+        android:id="@+id/show_name"
+        android:layout_width="100dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-99dp"
+        android:gravity="center"
+        android:text="이름"
+        android:textColor="@color/black"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/show_email"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-30dp"
+        android:gravity="center"
+        android:text="아이디"
+        android:textColor="@color/black"
+        android:textSize="12dp" />
+
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="340dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/gogo" />
 
 </LinearLayout>
