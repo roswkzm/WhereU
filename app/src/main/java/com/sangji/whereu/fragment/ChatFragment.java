@@ -3,6 +3,7 @@ import android.app.ActivityOptions;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,15 +35,21 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 public class ChatFragment extends Fragment {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm");
+    private ChatRecyclerViewAdapter chatRecyclerViewAdapter = null;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat,container,false);
         RecyclerView recyclerView = view.findViewById(R.id.chatfragment_recyclerview);
-        recyclerView.setAdapter(new ChatRecyclerViewAdapter());
+        chatRecyclerViewAdapter = new ChatRecyclerViewAdapter();
+        recyclerView.setAdapter(chatRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         return view;
+
     }
+
     class ChatRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         private List<ChatModel> chatModels = new ArrayList<>();
@@ -66,6 +73,7 @@ public class ChatFragment extends Fragment {
                 }
             });
         }
+
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -102,6 +110,7 @@ public class ChatFragment extends Fragment {
             commentMap.putAll(chatModels.get(position).comments);
             if(commentMap.keySet().toArray().length > 0) {
                 String lastMessageKey = (String) commentMap.keySet().toArray()[0];
+                Log.d("last item", chatModels.get(position).comments.get(lastMessageKey).message);
                 customViewHolder.textView_last_message.setText(chatModels.get(position).comments.get(lastMessageKey).message);
                 // 체팅방 목록의 타임스테프 출력부분
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
@@ -143,5 +152,10 @@ public class ChatFragment extends Fragment {
                 textView_timestamp = (TextView)view.findViewById(R.id.chatitem_textview_timestamp);
             }
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        chatRecyclerViewAdapter.notifyDataSetChanged();
     }
 }
