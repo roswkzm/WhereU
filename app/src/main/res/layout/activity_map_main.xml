@@ -6,20 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#00FFBB33"
     tools:context=".MapMainActivity">
+
     <Button
         android:id="@+id/btn_get_location"
-        android:text="현재위치 가져오기"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="My nav(click)"
+        android:layout_width="380dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn3"
+        android:textColor="@color/white"
+        android:layout_height="30dp"/>
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="380dp"
+        android:layout_height="30dp"
         android:id="@+id/location_view"
-        android:text="위도 경도"/>
+        android:background="@drawable/btn3"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="위도/경도"/>
+
     <fragment
         android:id="@+id/googleMap"
+        class="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment"/>
+        android:layout_height="match_parent" />
 </LinearLayout>
